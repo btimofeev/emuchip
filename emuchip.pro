@@ -1,0 +1,9 @@
+TEMPLATE = app
+QT = gui core
+CONFIG += qt release 
+DESTDIR = bin
+OBJECTS_DIR = build
+MOC_DIR = build
+UI_DIR = build
+HEADERS += src/mainwindow.h src/chip8_emu.h src/displayfield.h
+SOURCES += src/main.cpp src/mainwindow.cpp src/chip8_emu.cpp src/displayfield.cpp
