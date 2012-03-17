@@ -21,7 +21,7 @@
 
 #include <QMainWindow>
 #include <QActionGroup>
-#include "chip_emu.h"
+#include "../chip_emu.h"
 #include "displayfield.h"
 
 class MainWindow : public QMainWindow

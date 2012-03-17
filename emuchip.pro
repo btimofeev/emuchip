@@ -5,5 +5,5 @@ DESTDIR = bin
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
-HEADERS += src/mainwindow.h src/chip_emu.h src/displayfield.h
-SOURCES += src/main.cpp src/mainwindow.cpp src/chip_emu.cpp src/displayfield.cpp
+HEADERS += src/qt/mainwindow.h src/chip_emu.h src/qt/displayfield.h
+SOURCES += src/qt/main.cpp src/qt/mainwindow.cpp src/chip_emu.cpp src/qt/displayfield.cpp
