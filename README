@@ -1,15 +1,23 @@
-Copyright (C) 2009 by Boris Timofeev <mashin87@gmail.com>
-http://emuchip.googlecode.com
-http://www.emunix.org
+1) Description
+==============
 
-1) Compilation
+emuChip is cross-platform CHIP-8 emulator written in C++ and Qt library.
+
+2) Supported platforms
+==============
+
+	* Unix-like operating systems (Linux, FreeBSD, etc.)
+	* Windows
+	* Mac OS X (Not tested)
+
+3) Compilation
 ==============
 
 	1) Open a terminal and browse into the extracted folder.
-    2) Type 'qmake' to configure the program.
-    3) Type 'make' to compile the program.
+	2) Type 'qmake' to configure the program.
+	3) Type 'make' to compile the program.
 
-2) Key mappings
+4) Key mappings
 ===============
 
 	The original keypad that came with the CHIP-8 computers looked like this:
@@ -35,3 +43,10 @@ http://www.emunix.org
 		+-+-+-+-+
 		|Z|X|C|V|
 		+-+-+-+-+
+
+5) Author
+================
+
+Copyright (C) 2009-2012 by Boris Timofeev <mashin87@gmail.com>
+Site: http://code.google.com/p/emuchip/
+Blog: http://www.emunix.org
