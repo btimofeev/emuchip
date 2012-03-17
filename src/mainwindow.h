@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009  Boris Timofeev <mashin87@gmail.com>
+ *  Copyright (C) 2009-2012  Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 #include <QMainWindow>
 #include <QActionGroup>
-#include "chip8_emu.h"
+#include "chip_emu.h"
 #include "displayfield.h"
 
 class MainWindow : public QMainWindow
@@ -59,7 +59,7 @@ private:
 	
 	bool emuStart;
 	
-	Chip8_Emu *emu;
+	ChipEmu *emu;
 	DisplayField *displayField;
 	
 	QMenu *fileMenu;

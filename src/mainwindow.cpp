@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009  Boris Timofeev <mashin87@gmail.com>
+ *  Copyright (C) 2009-2012  Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ MainWindow::MainWindow()
 	createActions();
 	createMenu();
 	//resize(0, 0);
-	emu = new Chip8_Emu();
+	emu = new ChipEmu();
 	displayField = new DisplayField();
 	setCentralWidget(displayField);
 	
@@ -41,21 +41,11 @@ void MainWindow::openRom()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), lastDir, tr("All files (*)"));
 	lastDir = QFileInfo(fileName).absolutePath();
-
-	QFile file(fileName);
 	
-	if (file.open(QIODevice::ReadOnly))
+	if (fileName != "")
 	{
 		closeRom();
-		
-		unsigned char tmp_array[0x0FFF];
-		
-		QByteArray a = file.readAll();
-		file.close();
-		for (int i=0; i < a.size(); i++)
-			tmp_array[0x0200 + i] = a[i];
-							
-		emu->setMemory(tmp_array);
+		emu->loadGame(fileName.toLocal8Bit().data());
 		emuStart = true;
 		emulation();
 	}
@@ -64,7 +54,7 @@ void MainWindow::openRom()
 void MainWindow::closeRom()
 {
 	emuStart = false;
-	emu->emuReset();
+	emu->init();
 	displayField->displayClear();
 	displayField->repaint();
 }
@@ -75,56 +65,42 @@ void MainWindow::emulation()
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
-		int error = emu->cpuEmul();
-		if (error == 1)
-		{
-			QMessageBox::StandardButton reply;
-			reply = QMessageBox::critical(this, tr("Error"), tr("Illegal opcode."), QMessageBox::Ok);
-			closeRom();
-			break;
-		}
+		emu->executeNextOpcode();
 		
-		unsigned short opcode = emu->getOpcode();
-		if ((opcode & 0xF000)>>12 == 0xD)
+		if (emu->need_redraw)
 		{
 			displayField->setScreen(emu->screen);
 			displayField->repaint();
 		}
-		//unsigned char delay = emu->getDelay();
-		//unsigned char sound = emu->getSound();
-		//if (delay > 0)	emu->setDelay(--delay);
-		//if (sound > 0)	emu->setSound(--sound);
 	}
 }
 
 void MainWindow::ref()
 {
-		unsigned char delay = emu->getDelay();
-		unsigned char sound = emu->getSound();
-		if (delay > 0)	emu->setDelay(--delay);
-		if (sound > 0)	emu->setSound(--sound);
+	if (emuStart)
+		emu->decreaseTimers();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {	
 	switch(event->key())
 	{
-		case Qt::Key_1: emu->setKey(1, 1); break;
-		case Qt::Key_2: emu->setKey(2, 1); break;
-		case Qt::Key_3: emu->setKey(3, 1); break;
-		case Qt::Key_4: emu->setKey(0xC, 1); break;
-		case Qt::Key_Q: emu->setKey(4, 1); break;
-		case Qt::Key_W: emu->setKey(5, 1); break;
-		case Qt::Key_E: emu->setKey(6, 1); break;
-		case Qt::Key_R: emu->setKey(0xD, 1); break;
-		case Qt::Key_A: emu->setKey(7, 1); break;
-		case Qt::Key_S: emu->setKey(8, 1); break;
-		case Qt::Key_D: emu->setKey(9, 1); break;
-		case Qt::Key_F: emu->setKey(0xE, 1); break;
-		case Qt::Key_Z: emu->setKey(0xA, 1); break;
-		case Qt::Key_X: emu->setKey(0, 1); break;
-		case Qt::Key_C: emu->setKey(0xB, 1); break;
-		case Qt::Key_V: emu->setKey(0xF, 1); break;
+		case Qt::Key_1: emu->key[1] = 1; break;
+		case Qt::Key_2: emu->key[2] = 1; break;
+		case Qt::Key_3: emu->key[3] = 1; break;
+		case Qt::Key_4: emu->key[0xC] = 1; break;
+		case Qt::Key_Q: emu->key[4] = 1; break;
+		case Qt::Key_W: emu->key[5] = 1; break;
+		case Qt::Key_E: emu->key[6] = 1; break;
+		case Qt::Key_R: emu->key[0xD] = 1; break;
+		case Qt::Key_A: emu->key[7] = 1; break;
+		case Qt::Key_S: emu->key[8] = 1; break;
+		case Qt::Key_D: emu->key[9] = 1; break;
+		case Qt::Key_F: emu->key[0xE] = 1; break;
+		case Qt::Key_Z: emu->key[0xA] = 1; break;
+		case Qt::Key_X: emu->key[0] = 1; break;
+		case Qt::Key_C: emu->key[0xB] = 1; break;
+		case Qt::Key_V: emu->key[0xF] = 1; break;
 		//default: QWidget::keyPressEvent(event);
 	}
 }
@@ -133,22 +109,22 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
 	switch(event->key())
 	{
-		case Qt::Key_1: emu->setKey(1, 3); break;
-		case Qt::Key_2: emu->setKey(2, 3); break;
-		case Qt::Key_3: emu->setKey(3, 3); break;
-		case Qt::Key_4: emu->setKey(0xC, 3); break;
-		case Qt::Key_Q: emu->setKey(4, 3); break;
-		case Qt::Key_W: emu->setKey(5, 3); break;
-		case Qt::Key_E: emu->setKey(6, 3); break;
-		case Qt::Key_R: emu->setKey(0xD, 3); break;
-		case Qt::Key_A: emu->setKey(7, 3); break;
-		case Qt::Key_S: emu->setKey(8, 3); break;
-		case Qt::Key_D: emu->setKey(9, 3); break;
-		case Qt::Key_F: emu->setKey(0xE, 3); break;
-		case Qt::Key_Z: emu->setKey(0xA, 3); break;
-		case Qt::Key_X: emu->setKey(0, 3); break;
-		case Qt::Key_C: emu->setKey(0xB, 3); break;
-		case Qt::Key_V: emu->setKey(0xF, 3); break;
+		case Qt::Key_1: emu->key[1] = 0; break;
+		case Qt::Key_2: emu->key[2] = 0; break;
+		case Qt::Key_3: emu->key[3] = 0; break;
+		case Qt::Key_4: emu->key[0xC] = 0; break;
+		case Qt::Key_Q: emu->key[4] = 0; break;
+		case Qt::Key_W: emu->key[5] = 0; break;
+		case Qt::Key_E: emu->key[6] = 0; break;
+		case Qt::Key_R: emu->key[0xD] = 0; break;
+		case Qt::Key_A: emu->key[7] = 0; break;
+		case Qt::Key_S: emu->key[8] = 0; break;
+		case Qt::Key_D: emu->key[9] = 0; break;
+		case Qt::Key_F: emu->key[0xE] = 0; break;
+		case Qt::Key_Z: emu->key[0xA] = 0; break;
+		case Qt::Key_X: emu->key[0] = 0; break;
+		case Qt::Key_C: emu->key[0xB] = 0; break;
+		case Qt::Key_V: emu->key[0xF] = 0; break;
 		//default: QWidget::keyPressEvent(event);
 	}
 }
@@ -267,7 +243,7 @@ void MainWindow::set16x()
 
 void MainWindow::about()
 {
-	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 emulator.</p><b>Homepage:  </b> <a href=\"http://emuchip.googlecode.com\">http://emuchip.googlecode.com</a>.<small><p>Copyright &copy; 2009 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
+	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 emulator.</p><b>Homepage:  </b> <a href=\"http://emuchip.googlecode.com\">http://emuchip.googlecode.com</a>.<small><p>Copyright &copy; 2009-2012 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
 }
 
 void MainWindow::writeSettings()

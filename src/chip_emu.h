@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009  Boris Timofeev <mashin87@gmail.com>
+ *  Copyright (C) 2009-2012 Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,37 +15,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef CHIP_EMU_H
+#define CHIP_EMU_H
 
-#ifndef CHIP8_EMU_H
-#define CHIP8_EMU_H
+#include <string>
 
-class Chip8_Emu
+class ChipEmu
 {
-public:
-	Chip8_Emu();
-	int cpuEmul();
-	void emuReset();
-	
-	void setMemory(unsigned char [0x0FFF]);
-	void setDelay(unsigned char d)
-		{delay = d;}
-	void setSound(unsigned char s)
-		{sound = s;}
-	void setKey(int keyNumber, unsigned short value)
-		{keys[keyNumber] = value;}
-	
-	unsigned char getDelay()
-		{return delay;}
-	unsigned char getSound()
-		{return sound;}
-	unsigned short getOpcode()
-		{return opcode;}
-	
-	unsigned char screen[64*32];
-
 private:
 	unsigned short opcode;
-
 	unsigned char V[16];			// general purpose registers & VF carry flag
 	unsigned short I;				// adress register
 	unsigned short PC;				// program counter
@@ -53,18 +31,25 @@ private:
 	
 	unsigned short stack[16];
 	
-	unsigned char memory[0x0FFF];	
+	unsigned char memory[4096];	
 
+	unsigned char delay_timer;
+	unsigned char sound_timer;
 
-	unsigned char delay;
-	unsigned char sound;
-	
-	unsigned short keys[16];		// 0 - KEY_UP
-									// 1 - KEY_PRESSED
-									// 2 - KEY_DOWN
-									// 3 - KEY_RELEASED
-										
 	void drawSprite(unsigned char X, unsigned char Y, unsigned char N);
-};
 
+public:
+	unsigned char screen[64*32];
+	unsigned short key[16];			// 0 - KEY_RELEASED
+									// 1 - KEY_PRESSED
+
+	bool need_redraw;
+
+	ChipEmu();
+	void init();
+	bool loadGame(const char *filename);
+	void executeNextOpcode();
+	void decreaseTimers();
+	
+};
 #endif
