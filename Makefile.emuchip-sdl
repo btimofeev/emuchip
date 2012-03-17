@@ -1,0 +1,18 @@
+TARGET = emuchip-sdl
+LIBS = `sdl-config --libs` 
+CXXFLAGS = -O3 `sdl-config --cflags`
+CXX = g++
+SRCDIR = src/
+BUILDDIR = build/
+TARGETDIR = bin/
+
+
+all:
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)chip_emu.cpp -o $(BUILDDIR)chip_emu.o
+	$(CXX) $(CXXFLAGS) -c $(SRCDIR)sdl/main.cpp -o $(BUILDDIR)main.o
+	$(CXX) -o $(TARGETDIR)$(TARGET) $(BUILDDIR)main.o $(BUILDDIR)chip_emu.o $(LIBS)
+	strip $(TARGETDIR)$(TARGET)
+	cp $(SRCDIR)sdl/sprite.bmp $(TARGETDIR)
+clean:
+	rm -R $(BUILDDIR)
+	rm -R $(TARGETDIR)
