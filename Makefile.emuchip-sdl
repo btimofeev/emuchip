@@ -12,7 +12,6 @@ all:
 	$(CXX) $(CXXFLAGS) -c $(SRCDIR)sdl/main.cpp -o $(BUILDDIR)main.o
 	$(CXX) -o $(TARGETDIR)$(TARGET) $(BUILDDIR)main.o $(BUILDDIR)chip_emu.o $(LIBS)
 	strip $(TARGETDIR)$(TARGET)
-	cp $(SRCDIR)sdl/sprite.bmp $(TARGETDIR)
 clean:
 	rm -R $(BUILDDIR)
 	rm -R $(TARGETDIR)

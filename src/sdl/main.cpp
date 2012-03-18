@@ -22,7 +22,6 @@
 using namespace std;
 
 SDL_Surface *screen_surf;
-SDL_Surface *sprite_surf;
 
 ChipEmu emu;
 bool done;
@@ -40,9 +39,6 @@ bool gfx_init()
 		return false;
 	}
 	
-	if((sprite_surf = SDL_LoadBMP("sprite.bmp")) == NULL)
-		return false;
-	
 	return true;
 }
 
@@ -58,7 +54,9 @@ void draw()
 				SDL_Rect dest;
 				dest.x = j*5;
 				dest.y = i*5;
-				SDL_BlitSurface(sprite_surf, NULL, screen_surf, &dest);
+				dest.w = 5;
+				dest.h = 5;
+				SDL_FillRect(screen_surf, &dest, SDL_MapRGB(screen_surf->format, 0xff, 0xff, 0xff));
 			}
 		}
 	emu.need_redraw = false;
@@ -152,7 +150,6 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	SDL_FreeSurface(sprite_surf);
 	SDL_FreeSurface(screen_surf);
 	SDL_Quit;
 	return 0;
