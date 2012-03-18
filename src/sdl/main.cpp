@@ -113,6 +113,16 @@ void handle_input(SDL_Event &event)
 
 int main(int argc, char *argv[])
 {
+	cout << "---------------------------------------------------------" << endl; 
+	cout << "emuChip-sdl v0.0.3 by Boris Timofeev <mashin87@gmail.com>" << endl;
+	cout << "---------------------------------------------------------" << endl << endl;
+
+	if (argc == 1){
+		cerr << "Error: no input file specified" << endl;
+		cerr << "Usage: " << argv[0] << " FILE" << endl;
+		return 1;
+	}
+	
 	if (gfx_init() == false)
 	{
 		cerr << "Unable to initialize SDL: " << SDL_GetError() << endl;

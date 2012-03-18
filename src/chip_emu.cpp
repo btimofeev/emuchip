@@ -326,18 +326,18 @@ bool ChipEmu::loadGame(const char *filename)
 		size = file.tellg();
 		if (size > 0x0FFF - 0x200)
 		{
-			cerr << "File " << filename << " is too large." << endl;
+			cerr << "Error: file '" << filename << "' is too large." << endl;
 			return false;
 		}
 		file.seekg(0, ios::beg);
 		file.read(reinterpret_cast<char*>(&memory[0x200]), size);
 		file.close();
 		
-		cout << "File " << filename << " loaded." << endl;
+		cout << "File '" << filename << "' loaded." << endl;
 		return true;
 	}
 
-	cerr << "Unable to open file " << filename << endl;
+	cerr << "Error: unable to open file '" << filename << "'" << endl;
 	return false;
 }
 
