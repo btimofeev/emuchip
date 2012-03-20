@@ -85,9 +85,12 @@ void ChipEmu::drawSprite(unsigned char X, unsigned char Y, unsigned char N)
 		{
 			if((data & (0x80 >> xpix)) != 0)
 			{
-				if (screen[V[X] + xpix + (V[Y] + yline) * 64] == 1) V[0xF] = 1;
-				screen[V[X] + xpix + (V[Y] + yline) * 64] ^= 1;
-				//screen[V[X] + xpix + (V[Y] + yline) * 64] = (screen[V[X] + xpix + (V[Y] + yline) * 64] || 1) && !(screen[V[X] + xpix + (V[Y] + yline) * 64] && 1);
+				if ((V[X] + xpix) < 64 && (V[Y] + yline) < 32 && (V[X] + xpix) >= 0 && (V[Y] + yline) >= 0)
+				{
+					if (screen[V[X] + xpix + (V[Y] + yline) * 64] == 1) V[0xF] = 1;
+					screen[V[X] + xpix + (V[Y] + yline) * 64] ^= 1;
+					//screen[V[X] + xpix + (V[Y] + yline) * 64] = (screen[V[X] + xpix + (V[Y] + yline) * 64] || 1) && !(screen[V[X] + xpix + (V[Y] + yline) * 64] && 1);
+				}
 			}
 		}
 	}
