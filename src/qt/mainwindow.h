@@ -41,7 +41,6 @@ private slots:
 	void set4x();
 	void set8x();
 	void set16x();
-	void ref();
 	void bgColorDialog();
 	void fgColorDialog();
 	void about();

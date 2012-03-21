@@ -24,14 +24,10 @@ MainWindow::MainWindow()
 
 	createActions();
 	createMenu();
-	//resize(0, 0);
+
 	emu = new ChipEmu();
 	displayField = new DisplayField();
 	setCentralWidget(displayField);
-	
-	QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(ref()));
-    timer->start(16);
 	
 	emuStart = false;
 	readSettings();
@@ -61,6 +57,9 @@ void MainWindow::closeRom()
 
 void MainWindow::emulation()
 {
+	QElapsedTimer et;
+	et.start();
+	
 	while (emuStart)
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
@@ -72,13 +71,14 @@ void MainWindow::emulation()
 			displayField->setScreen(emu->screen);
 			displayField->repaint();
 		}
+		
+		//decrease timers every 1/60sec
+		if (et.hasExpired(1000/60))
+		{
+			emu->decreaseTimers();
+			et.restart();
+		}
 	}
-}
-
-void MainWindow::ref()
-{
-	if (emuStart)
-		emu->decreaseTimers();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
