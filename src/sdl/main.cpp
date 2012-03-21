@@ -25,6 +25,7 @@ SDL_Surface *screen_surf;
 
 ChipEmu emu;
 bool done;
+int opcode_count;
 
 bool gfx_init()
 {
@@ -131,6 +132,7 @@ int main(int argc, char *argv[])
 		done = false;
 		Uint32 lasttick = SDL_GetTicks(); //for delay fps
 		
+		int opcode_count = 0;
 		while (!done)
 		{
 			//keyboard
@@ -145,13 +147,18 @@ int main(int argc, char *argv[])
 				SDL_Flip(screen_surf);
 			}
 			
-			emu.executeNextOpcode();
+			if (opcode_count < 12)	// execute 720 opcodes per sec
+			{
+				emu.executeNextOpcode();
+				opcode_count++;
+			}
 			
 			//decrease timers every 1/60sec
 			if (SDL_GetTicks() - lasttick >= 1000/60)
 			{
 				emu.decreaseTimers();
 				lasttick = SDL_GetTicks();
+				opcode_count = 0;
 			}
 		}
 	}
