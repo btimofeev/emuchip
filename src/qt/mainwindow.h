@@ -57,6 +57,7 @@ private:
 	void emulation();
 	
 	bool emuStart;
+	int opcode_count;
 	
 	ChipEmu *emu;
 	DisplayWidget *display;

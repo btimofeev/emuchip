@@ -64,19 +64,22 @@ void MainWindow::emulation()
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
-		emu->executeNextOpcode();
-		
-		if (emu->need_redraw)
+		if (opcode_count < 12)	// execute 720 opcodes per sec
 		{
-			display->setScreen(emu->screen);
-			display->repaint();
+			emu->executeNextOpcode();
+			opcode_count++;
 		}
-		
+			
 		//decrease timers every 1/60sec
 		if (et.hasExpired(1000/60))
 		{
 			emu->decreaseTimers();
 			et.restart();
+			
+			display->setScreen(emu->screen);
+			display->repaint();
+			
+			opcode_count = 0;
 		}
 	}
 }
