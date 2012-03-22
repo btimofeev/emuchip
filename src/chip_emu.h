@@ -43,8 +43,6 @@ public:
 	unsigned short key[16];			// 0 - KEY_RELEASED
 									// 1 - KEY_PRESSED
 
-	bool need_redraw;
-
 	ChipEmu();
 	void init();
 	bool loadGame(const char *filename);

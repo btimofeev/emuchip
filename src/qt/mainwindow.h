@@ -45,7 +45,6 @@ private slots:
 	void fgColorDialog();
 	void about();
 	
-
 protected:
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);

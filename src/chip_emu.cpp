@@ -71,8 +71,6 @@ void ChipEmu::init()
 	//Load font
 	for (int i = 0; i < 16*5; i++)
 		memory[i] = font[i];
-	
-	need_redraw = true;
 }
 
 void ChipEmu::drawSprite(unsigned char X, unsigned char Y, unsigned char N)
@@ -113,7 +111,6 @@ void ChipEmu::executeNextOpcode()
 				case 0xE0:		// 00E0 - clear the screen
 					for (int i = 0; i < 2048; i++)
 						screen[i]=0;
-					need_redraw = true;
 					break;
 
 				case 0xEE:		// 00EE - return from subroutine
@@ -235,7 +232,6 @@ void ChipEmu::executeNextOpcode()
 
 		case 0xD:				// DXYN - Draw sprite
 			drawSprite(((opcode & 0x0F00)>>8), ((opcode & 0x00F0)>>4), (opcode & 0x000F));
-			need_redraw = true;
 			break;
 
 		case 0xE:

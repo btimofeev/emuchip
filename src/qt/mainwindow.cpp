@@ -70,7 +70,7 @@ void MainWindow::emulation()
 			opcode_count++;
 		}
 			
-		//decrease timers every 1/60sec
+		//decrease timers every 1/60sec and redraw screen
 		if (et.hasExpired(1000/60))
 		{
 			emu->decreaseTimers();
@@ -137,6 +137,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	emuStart = false;
 	writeSettings();
 	delete emu;
+	delete display;
 	event->accept();
 }
 

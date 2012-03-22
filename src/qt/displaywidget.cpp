@@ -41,8 +41,7 @@ void DisplayWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.scale ( resolution, resolution );
-	//painter.setRenderHint(QPainter::Antialiasing, true);
-	QBrush brush(/*Qt::black*/bgColor, Qt::SolidPattern);
+	QBrush brush(bgColor, Qt::SolidPattern);
 	painter.fillRect(0, 0, 64, 32, brush);
 	
 	int t = 0;
@@ -51,8 +50,8 @@ void DisplayWidget::paintEvent(QPaintEvent *)
 		{
 			if (screen[t++] == 1)
 			{
-				painter.setPen(/*Qt::white*/fgColor);
-				painter.setBrush(/*Qt::white*/fgColor);
+				painter.setPen(fgColor);
+				painter.setBrush(fgColor);
 				if (resolution > 1) painter.drawRect ( j, i, 1, 1 );
 				else painter.drawPoint(j, i);
 			}

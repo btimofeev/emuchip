@@ -60,7 +60,6 @@ void draw()
 				SDL_FillRect(screen_surf, &dest, SDL_MapRGB(screen_surf->format, 0xff, 0xff, 0xff));
 			}
 		}
-	emu.need_redraw = false;
 }
 
 void handle_input(SDL_Event &event)
@@ -139,25 +138,22 @@ int main(int argc, char *argv[])
 			while (SDL_PollEvent(&event)) {
 				handle_input(event);
 			}
-			
-			//redraw screen
-			if(emu.need_redraw)
-			{	
-				draw();
-				SDL_Flip(screen_surf);
-			}
-			
+		
 			if (opcode_count < 12)	// execute 720 opcodes per sec
 			{
 				emu.executeNextOpcode();
 				opcode_count++;
 			}
-			
-			//decrease timers every 1/60sec
+
+			//decrease timers every 1/60sec and redraw screen
 			if (SDL_GetTicks() - lasttick >= 1000/60)
 			{
 				emu.decreaseTimers();
 				lasttick = SDL_GetTicks();
+				
+				draw();
+				SDL_Flip(screen_surf);
+				
 				opcode_count = 0;
 			}
 		}
