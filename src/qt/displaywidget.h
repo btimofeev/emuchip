@@ -16,17 +16,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DISPLAYFIELD_H
-#define DISPLAYFIELD_H
+#ifndef DISPLAYWIDGET_H
+#define DISPLAYWIDGETH
 
 #include <QWidget>
 
-class DisplayField : public QWidget
+class DisplayWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	DisplayField();
+	DisplayWidget();
 	
 	void setResolution(int r) { resolution = r; }
 	int getResolution() { return resolution; }
@@ -36,7 +36,7 @@ public:
 	QColor getFgColor() { return fgColor; }
 
 	void setScreen(unsigned char [64*32]);
-	void displayClear();
+	void clear();
 
 protected:
 	void paintEvent(QPaintEvent *event);

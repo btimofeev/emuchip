@@ -17,27 +17,27 @@
  */
 
 #include <QPainter>
-#include "displayfield.h"
+#include "displaywidget.h"
 
-DisplayField::DisplayField()
+DisplayWidget::DisplayWidget()
 {
-	displayClear();
+	clear();
 	repaint();
 }
 
-void DisplayField::displayClear()
+void DisplayWidget::clear()
 {
 	for (int i = 0; i < 2048; i++)
 		screen[i] = 0;
 }
 
-void DisplayField::setScreen(unsigned char arr[64*32])
+void DisplayWidget::setScreen(unsigned char arr[64*32])
 {
 	for (int i = 0; i < 2048; i++)
 		screen[i] = arr[i];
 }
 
-void DisplayField::paintEvent(QPaintEvent *)
+void DisplayWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.scale ( resolution, resolution );

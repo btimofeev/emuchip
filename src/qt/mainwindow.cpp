@@ -26,8 +26,8 @@ MainWindow::MainWindow()
 	createMenu();
 
 	emu = new ChipEmu();
-	displayField = new DisplayField();
-	setCentralWidget(displayField);
+	display = new DisplayWidget();
+	setCentralWidget(display);
 	
 	emuStart = false;
 	readSettings();
@@ -51,8 +51,8 @@ void MainWindow::closeRom()
 {
 	emuStart = false;
 	emu->init();
-	displayField->displayClear();
-	displayField->repaint();
+	display->clear();
+	display->repaint();
 }
 
 void MainWindow::emulation()
@@ -68,8 +68,8 @@ void MainWindow::emulation()
 		
 		if (emu->need_redraw)
 		{
-			displayField->setScreen(emu->screen);
-			displayField->repaint();
+			display->setScreen(emu->screen);
+			display->repaint();
 		}
 		
 		//decrease timers every 1/60sec
@@ -208,36 +208,36 @@ void MainWindow::createMenu()
 
 void MainWindow::set1x()
 {
-	displayField->setResolution(1);
-	displayField->repaint();
+	display->setResolution(1);
+	display->repaint();
 	setFixedSize (64, 32 + menuBar()->height());
 }
 
 void MainWindow::set2x()
 {
-	displayField->setResolution(2);
-	displayField->repaint();
+	display->setResolution(2);
+	display->repaint();
 	setFixedSize (128, 64 + menuBar()->height());
 }
 
 void MainWindow::set4x()
 {
-	displayField->setResolution(4);
-	displayField->repaint();
+	display->setResolution(4);
+	display->repaint();
 	setFixedSize (256, 128 + menuBar()->height());
 }
 
 void MainWindow::set8x()
 {
-	displayField->setResolution(8);
-	displayField->repaint();
+	display->setResolution(8);
+	display->repaint();
 	setFixedSize (512, 256 + menuBar()->height());
 }
 
 void MainWindow::set16x()
 {
-	displayField->setResolution(16);
-	displayField->repaint();
+	display->setResolution(16);
+	display->repaint();
 	setFixedSize (1024, 512 + menuBar()->height());
 }
 
@@ -249,11 +249,11 @@ void MainWindow::about()
 void MainWindow::writeSettings()
 {
 	QSettings settings("emuChip", "emuChip");
-	settings.setValue("displayResolution", displayField->getResolution());
+	settings.setValue("displayResolution", display->getResolution());
 	settings.setValue("lastDir", lastDir);
-	QVariant color =  displayField->getBgColor();
+	QVariant color =  display->getBgColor();
 	settings.setValue("bgColor", color);
-	color =  displayField->getFgColor();
+	color =  display->getFgColor();
 	settings.setValue("fgColor", color);
 }
 
@@ -273,21 +273,21 @@ void MainWindow::readSettings()
 
 	QVariant v = settings.value("bgColor", Qt::black);
 	QColor color = v.value<QColor>();
-	displayField->setBgColor(color);
+	display->setBgColor(color);
 
 	v = settings.value("fgColor", Qt::white);
 	color = v.value<QColor>();
-	displayField->setFgColor(color);
+	display->setFgColor(color);
 }
 
 void MainWindow::bgColorDialog()
 {
-	displayField->setBgColor(QColorDialog::getColor (Qt::black));
-	displayField->repaint();
+	display->setBgColor(QColorDialog::getColor (Qt::black));
+	display->repaint();
 }
 
 void MainWindow::fgColorDialog()
 {
-	displayField->setFgColor(QColorDialog::getColor (Qt::white));
-	displayField->repaint();
+	display->setFgColor(QColorDialog::getColor (Qt::white));
+	display->repaint();
 }

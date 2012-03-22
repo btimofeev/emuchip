@@ -22,7 +22,7 @@
 #include <QMainWindow>
 #include <QActionGroup>
 #include "../chip_emu.h"
-#include "displayfield.h"
+#include "displaywidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -59,7 +59,7 @@ private:
 	bool emuStart;
 	
 	ChipEmu *emu;
-	DisplayField *displayField;
+	DisplayWidget *display;
 	
 	QMenu *fileMenu;
 	QMenu *videoMenu;
