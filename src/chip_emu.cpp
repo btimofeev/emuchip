@@ -24,6 +24,7 @@ using namespace std;
 
 ChipEmu::ChipEmu()
 {
+	init();
 }
 
 //Clear registers, memory and stack. Load font and redraw screen.
@@ -96,9 +97,6 @@ void ChipEmu::drawSprite(unsigned char X, unsigned char Y, unsigned char N)
 
 void ChipEmu::executeNextOpcode()
 {
-	
-	int i, n;
-
 	opcode = (memory[PC]<<8) + memory[PC+1];
 
 	PC += 2;
@@ -171,6 +169,7 @@ void ChipEmu::executeNextOpcode()
 					break;
 
 				case 0x4:		// 8XY4 - set VX = VX + VY, VF = carry
+					int i;
 					i = static_cast<int>(V[((opcode & 0x0F00)>>8)]) + static_cast<int>(V[((opcode & 0x00F0)>>4)]);
 
 					if (i > 255)
@@ -260,7 +259,7 @@ void ChipEmu::executeNextOpcode()
 					break;
 
 				case 0x0A:		// FX0A - set VX = key, wait for keypress
-					for (n=0; n < 16; n++)
+					for (int n=0; n < 16; n++)
 					{
 						if (key[n] == 1)
 						{
@@ -288,6 +287,7 @@ void ChipEmu::executeNextOpcode()
 					break;
 
 				case 0x33:		// FX33 - store BCD of VX in [I], [I+1], [I+2]
+					int n;
 					n = V[((opcode & 0x0F00)>>8)];
 					memory[I] = (n - (n % 100)) / 100;
 					n -= memory[I] * 100;
@@ -297,12 +297,12 @@ void ChipEmu::executeNextOpcode()
 					break;
 
 				case 0x55:		// FX55 - store V0 .. VX in [I] .. [I+X]
-					for (n=0; n <= ((opcode & 0x0F00)>>8); n++)
+					for (int n=0; n <= ((opcode & 0x0F00)>>8); n++)
 						memory[I++] = V[n];
 					break;
 
 				case 0x65:		// FX65 - read V0 .. VX from [I] .. [I+X]
-					for (n=0; n <= ((opcode & 0x0F00)>>8); n++)
+					for (int n=0; n <= ((opcode & 0x0F00)>>8); n++)
 						V[n] = memory[I++];
 					break;
 					
