@@ -136,8 +136,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
 	emuStart = false;
 	writeSettings();
-	delete emu;
 	delete display;
+	delete emu;
 	event->accept();
 }
 
