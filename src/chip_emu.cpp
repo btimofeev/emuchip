@@ -16,15 +16,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "chip_emu.h"
-#include <cstdlib>
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 using namespace std;
 
 ChipEmu::ChipEmu()
 {
 	init();
+	srand(time(NULL));
 }
 
 //Clear registers, memory and stack. Load font and redraw screen.
@@ -226,7 +228,7 @@ void ChipEmu::executeNextOpcode()
 			break;
 
 		case 0xC:				// CXKK - set VX = random & Byte
-			V[((opcode & 0x0F00)>>8)] = rand() & (opcode & 0x00FF);
+			V[((opcode & 0x0F00)>>8)] = (rand() % 255) & (opcode & 0x00FF);
 			break;
 
 		case 0xD:				// DXYN - Draw sprite
