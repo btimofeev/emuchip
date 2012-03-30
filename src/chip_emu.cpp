@@ -16,15 +16,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "chip_emu.h"
-#include <cstdlib>
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <time.h>
 
 using namespace std;
 
 ChipEmu::ChipEmu()
 {
 	init();
+	srand(time(NULL));
 }
 
 //Clear registers, memory and stack. Load font and redraw screen.
