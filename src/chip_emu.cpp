@@ -261,15 +261,16 @@ void ChipEmu::executeNextOpcode()
 					break;
 
 				case 0x0A:		// FX0A - set VX = key, wait for keypress
-					for (int n=0; n < 16; n++)
+					PC -= 2;
+					for (unsigned char n=0; n < 16; n++)
 					{
 						if (key[n] == 1)
 						{
 							V[((opcode & 0x0F00)>>8)] = n;
+							PC += 2;
 							break;
 						}
 					}
-					PC -= 2;
 					break;
 
 				case 0x15:		// FX15 - set delaytimer = VX

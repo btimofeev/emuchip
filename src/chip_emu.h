@@ -40,7 +40,7 @@ private:
 
 public:
 	unsigned char screen[64*32];
-	unsigned short key[16];			// 0 - KEY_RELEASED
+	unsigned char key[16];			// 0 - KEY_RELEASED
 									// 1 - KEY_PRESSED
 
 	ChipEmu();
