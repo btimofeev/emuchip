@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	
 	app.setApplicationName("emuChip");
-	app.setApplicationVersion("0.1");
+	app.setApplicationVersion("0.2");
 		
 	MainWindow mainWin;
 	mainWin.setWindowTitle(app.applicationName() + " v" + app.applicationVersion());
