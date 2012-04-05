@@ -39,7 +39,10 @@ private:
 	void drawSprite(unsigned char X, unsigned char Y, unsigned char N);
 
 public:
-	unsigned char screen[64*32];
+	int mode;						// 0 - CHIP-8
+									// 1 - SCHIP
+
+	unsigned char screen[128][64];
 	unsigned char key[16];			// 0 - KEY_RELEASED
 									// 1 - KEY_PRESSED
 

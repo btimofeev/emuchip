@@ -36,7 +36,7 @@ bool gfx_init()
 
 	SDL_WM_SetCaption("emuchip-sdl", "emuchip-sdl");
 	
-	if((screen_surf = SDL_SetVideoMode(320, 160, 24, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+	if((screen_surf = SDL_SetVideoMode(256, 128, 24, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
 		return false;
 	}
 	
@@ -47,16 +47,16 @@ void draw()
 {
 	SDL_FillRect(screen_surf, NULL, 0x000000);
 	int t = 0;
-	for (int i = 0; i < 32; i++)
-		for (int j = 0; j < 64; j++)
+	for (int y = 0; y < 64; y++)
+		for (int x = 0; x < 128; x++)
 		{
-			if (emu.screen[t++] == 1)
+			if (emu.screen[x][y] == 1)
 			{
 				SDL_Rect dest;
-				dest.x = j*5;
-				dest.y = i*5;
-				dest.w = 5;
-				dest.h = 5;
+				dest.x = x*2;
+				dest.y = y*2;
+				dest.w = 2;
+				dest.h = 2;
 				SDL_FillRect(screen_surf, &dest, SDL_MapRGB(screen_surf->format, 0xff, 0xff, 0xff));
 			}
 		}

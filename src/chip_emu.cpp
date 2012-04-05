@@ -41,8 +41,9 @@ void ChipEmu::init()
 	for (int i = 0; i < 4096; i++)
 		memory[i] = 0;
 	
-	for (int i = 0; i < 2048; i++)
-		screen[i] = 0;
+	for (int y = 0; y < 64; y++)
+		for (int x = 0; x < 128; x++)
+			screen[x][y] = 0;
 
 	for (int i = 0; i < 16; i++)
 		V[i] = 0;
@@ -74,26 +75,55 @@ void ChipEmu::init()
 	//Load font
 	for (int i = 0; i < 16*5; i++)
 		memory[i] = font[i];
+	
+	mode = 0;
 }
 
 void ChipEmu::drawSprite(unsigned char X, unsigned char Y, unsigned char N)
 {	
 	V[0xF] = 0;
-	for (int yline = 0; yline < N; yline++)
+	switch (mode)
 	{
-		unsigned char data = memory[I + yline];
-		for (int xpix = 0; xpix < 8; xpix++)
-		{
-			if((data & (0x80 >> xpix)) != 0)
+		case 0: // CHIP-8 mode
+			if (N == 0) N = 16;
+			for (int yline = 0; yline < N; yline++)
 			{
-				if ((V[X] + xpix) < 64 && (V[Y] + yline) < 32 && (V[X] + xpix) >= 0 && (V[Y] + yline) >= 0)
+				unsigned char data = memory[I + yline];
+				for (int xpix = 0; xpix < 8; xpix++)
 				{
-					if (screen[V[X] + xpix + (V[Y] + yline) * 64] == 1) V[0xF] = 1;
-					screen[V[X] + xpix + (V[Y] + yline) * 64] ^= 1;
-					//screen[V[X] + xpix + (V[Y] + yline) * 64] = (screen[V[X] + xpix + (V[Y] + yline) * 64] || 1) && !(screen[V[X] + xpix + (V[Y] + yline) * 64] && 1);
+					if((data & (0x80 >> xpix)) != 0)
+					{
+						if ((V[X] + xpix) < 64 && (V[Y] + yline) < 32 && (V[X] + xpix) >= 0 && (V[Y] + yline) >= 0)
+						{
+							if (screen[(V[X] + xpix)*2][(V[Y] + yline)*2] == 1) V[0xF] = 1;
+							screen[(V[X] + xpix)*2][(V[Y] + yline)*2] ^= 1;
+							screen[(V[X] + xpix)*2 + 1][(V[Y] + yline)*2] ^= 1;
+							screen[(V[X] + xpix)*2][(V[Y] + yline)*2 + 1] ^= 1;
+							screen[(V[X] + xpix)*2 + 1][(V[Y] + yline)*2 + 1] ^= 1;
+						}
+					}
 				}
 			}
-		}
+			break;
+			
+		case 1: // SCHIP mode
+			if (N == 0) N = 16;
+			for (int yline = 0; yline < N; yline++)
+			{
+				unsigned char data = memory[I + yline];
+				for (int xpix = 0; xpix < 16; xpix++)
+				{
+					if((data & (0x80 >> xpix)) != 0)
+					{
+						if ((V[X] + xpix) < 128 && (V[Y] + yline) < 64 && (V[X] + xpix) >= 0 && (V[Y] + yline) >= 0)
+						{
+							if (screen[V[X] + xpix][V[Y] + yline] == 1) V[0xF] = 1;
+							screen[V[X] + xpix][V[Y] + yline] ^= 1;
+						}
+					}
+				}
+			}
+			break;
 	}
 }
 
@@ -106,15 +136,45 @@ void ChipEmu::executeNextOpcode()
 	switch ((opcode & 0xF000)>>12)
 	{
 		case 0x0:
+			if ((opcode & 0x00F0)>>4 == 0xC) // 00CN - scroll display N lines down *SCHIP*
+			{
+				int N = opcode & 0x000F;
+				for (int y = 63; y > 0; y--)
+					for (int x = 0; x < 128; x++)
+						screen[x][y] = screen[x][y-N];
+				break;
+			}
+
 			switch	(opcode & 0x00FF)
 			{
 				case 0xE0:		// 00E0 - clear the screen
-					for (int i = 0; i < 2048; i++)
-						screen[i]=0;
+					for (int y = 0; y < 64; y++)
+						for (int x = 0; x < 128; x++)
+							screen[x][y] = 0;
 					break;
 
 				case 0xEE:		// 00EE - return from subroutine
 					PC = stack[--SP];
+					break;
+				
+				case 0xFB:		// 00FB - scroll display 4 pixels right *SCHIP*
+					for (int y = 0; y < 64; y++)
+						for (int x = 127; x > 3; x--)
+							screen[x][y] = screen[x-4][y];
+					break;
+				
+				case 0xFC:		// 00FB - scroll display 4 pixels left *SCHIP*
+					for (int y = 0; y < 64; y++)
+						for (int x = 0; x < 124; x++)
+							screen[x][y] = screen[x+4][y];
+					break;
+						
+				case 0xFE:		// 00FE - disable extended screen mode *SCHIP*
+					mode = 0;
+					break;
+				
+				case 0xFF:		// 00FF - enable extended screen mode *SCHIP*
+					mode = 1;
 					break;
 				
 				default:
