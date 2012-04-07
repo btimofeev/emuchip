@@ -38,6 +38,8 @@ private:
 
 	void drawSprite(unsigned char X, unsigned char Y, unsigned char N);
 
+	unsigned char hp48_flags[8];	// for Fx75, Fx85 opcodes
+
 public:
 	int mode;						// 0 - CHIP-8
 									// 1 - SCHIP

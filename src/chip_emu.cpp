@@ -99,6 +99,9 @@ void ChipEmu::init()
 	for (int i=0; i < 16*10; i++)
 		memory[i+80] = bigfont[i];
 	
+	for (int i=0; i < 8; i++)
+		hp48_flags[i] = 0;
+	
 	mode = 0;
 }
 
@@ -437,6 +440,20 @@ void ChipEmu::executeNextOpcode()
 				case 0x65:		// FX65 - read V0 .. VX from [I] .. [I+X]
 					for (int n=0; n <= ((opcode & 0x0F00)>>8); n++)
 						V[n] = memory[I++];
+					break;
+					
+				case 0x75:		// FX75 - save V0...VX (X<8) in the HP48 flags *SCHIP*
+					//for (int i=0; i < 8; i++)
+						//hp48_flags[i] = 0;
+					for (int i=0; i <= ((opcode & 0x0F00)>>8); i++)
+						hp48_flags[i] = V[i];
+					break;
+				
+				case 0x85:		// FX85 - load V0...VX (X<8) from the HP48 flags *SCHIP*
+					for (int i=0; i <= ((opcode & 0x0F00)>>8); i++)
+						V[i] = hp48_flags[i];
+					//for (int i=0; i < 8; i++)
+						//hp48_flags[i] = 0;
 					break;
 					
 				default:
