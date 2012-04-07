@@ -102,6 +102,8 @@ void ChipEmu::init()
 	for (int i=0; i < 8; i++)
 		hp48_flags[i] = 0;
 	
+	stop = false;
+	
 	mode = 0;
 }
 
@@ -236,6 +238,11 @@ void ChipEmu::executeNextOpcode()
 						screen[126][y] = 0;
 						screen[127][y] = 0;
 					}
+					break;
+				
+				case 0xFD:		// 00FD - Quit the emulator
+					stop = true;
+					cout << "Quit the emulator" << endl;
 					break;
 						
 				case 0xFE:		// 00FE - disable extended screen mode *SCHIP*

@@ -157,6 +157,8 @@ int main(int argc, char *argv[])
 				
 				opcode_count = 0;
 			}
+			
+			if (emu.stop) done = true;
 		}
 	}
 	

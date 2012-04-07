@@ -48,6 +48,8 @@ public:
 	unsigned char key[16];			// 0 - KEY_RELEASED
 									// 1 - KEY_PRESSED
 
+	bool stop;						// for 00FD opcode
+
 	ChipEmu();
 	void init();
 	bool loadGame(const char *filename);
