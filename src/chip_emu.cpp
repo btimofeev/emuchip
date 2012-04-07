@@ -410,7 +410,11 @@ void ChipEmu::executeNextOpcode()
 					sound_timer = V[((opcode & 0x0F00)>>8)];
 					break;
 
-				case 0x1E:		// FX1E - set I = I + VX
+				case 0x1E:		// FX1E - set I = I + VX; set VF if buffer overflow
+					if ((I += V[((opcode & 0x0F00)>>8)]) > 0xfff)
+						V[0xF] = 1;
+					else 
+						V[0xF] = 0;
 					I += V[((opcode & 0x0F00)>>8)];
 					break;
 
