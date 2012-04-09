@@ -1,14 +1,13 @@
 1) Description
 ==============
 
-emuChip is cross-platform CHIP-8 emulator written in C++, Qt and SDL libraries.
+emuChip is cross-platform CHIP-8 and Super CHIP emulator written in C++, Qt and SDL libraries.
 
 2) Supported platforms
 ==============
 
-	* Unix-like operating systems (Linux, FreeBSD, etc.)
+	* Linux
 	* Windows
-	* Mac OS X (Not tested)
 
 3) Compilation
 ==============

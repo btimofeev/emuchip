@@ -234,7 +234,7 @@ void MainWindow::set8x()
 
 void MainWindow::about()
 {
-	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 emulator.</p><b>Homepage:  </b> <a href=\"http://code.google.com/p/emuchip\">http://code.google.com/p/emuchip/</a>.<small><p>Copyright &copy; 2009-2012 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
+	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 and Super CHIP emulator.</p><b>Homepage:  </b> <a href=\"http://code.google.com/p/emuchip\">http://code.google.com/p/emuchip/</a>.<small><p>Copyright &copy; 2009-2012 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
 }
 
 void MainWindow::writeSettings()

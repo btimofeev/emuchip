@@ -292,6 +292,7 @@ void ChipEmu::executeNextOpcode()
 			{
 				case 0x0:		// 8XY0 - set VX = VY
 					V[((opcode & 0x0F00)>>8)] = V[((opcode & 0x00F0)>>4)];
+				
 					break;
 
 				case 0x1:		// 8XY1 - set VX = VX | VY
