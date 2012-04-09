@@ -40,7 +40,6 @@ private slots:
 	void set2x();
 	void set4x();
 	void set8x();
-	void set16x();
 	void bgColorDialog();
 	void fgColorDialog();
 	void about();
@@ -74,7 +73,6 @@ private:
 	QAction *set2xAction;
 	QAction *set4xAction;
 	QAction *set8xAction;
-	QAction *set16xAction;
 	QAction *bgColorDialogAction;
 	QAction *fgColorDialogAction;
 	QAction *aboutAction;

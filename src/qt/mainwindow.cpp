@@ -60,7 +60,7 @@ void MainWindow::emulation()
 	QElapsedTimer et;
 	et.start();
 	
-	while (emuStart)
+	while (emuStart == true)
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
@@ -81,6 +81,7 @@ void MainWindow::emulation()
 			
 			opcode_count = 0;
 		}
+		if (emu->stop) closeRom();
 	}
 }
 
@@ -134,79 +135,72 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	emuStart = false;
+	closeRom();
 	writeSettings();
-	delete display;
-	delete emu;
 	event->accept();
 }
 
 void MainWindow::createActions()
 {
-	openRomAction = new QAction(tr("&Open ROM.."), this);
+	openRomAction = new QAction(tr("Open ROM.."), this);
 	openRomAction->setShortcut(tr("Ctrl+O"));
 	connect(openRomAction, SIGNAL(triggered()), this, SLOT(openRom()));
 
-	closeRomAction = new QAction(tr("&Close ROM.."), this);
+	closeRomAction = new QAction(tr("Close ROM.."), this);
 	closeRomAction->setShortcut(tr("Ctrl+C"));
 	connect(closeRomAction, SIGNAL(triggered()), this, SLOT(closeRom()));
 
-	exitAction = new QAction(tr("E&xit"), this);
+	exitAction = new QAction(tr("Exit"), this);
 	exitAction->setShortcut(tr("Alt+F4"));
 	connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-	set1xAction = new QAction(tr("64x32"), this);
+	set1xAction = new QAction(tr("128x64"), this);
 	set1xAction->setCheckable(true);
 	connect(set1xAction, SIGNAL(triggered()), this, SLOT(set1x()));
-	set2xAction = new QAction(tr("128x64"), this);
+	set2xAction = new QAction(tr("256x128"), this);
 	set2xAction->setCheckable(true);
 	connect(set2xAction, SIGNAL(triggered()), this, SLOT(set2x()));
-	set4xAction = new QAction(tr("256x128"), this);
+	set4xAction = new QAction(tr("512x256"), this);
 	set4xAction->setCheckable(true);
 	connect(set4xAction, SIGNAL(triggered()), this, SLOT(set4x()));
-	set8xAction = new QAction(tr("512x256"), this);
+	set8xAction = new QAction(tr("1024x512"), this);
 	set8xAction->setCheckable(true);
 	connect(set8xAction, SIGNAL(triggered()), this, SLOT(set8x()));
-	set16xAction = new QAction(tr("1024x512"), this);
-	set16xAction->setCheckable(true);
-	connect(set16xAction, SIGNAL(triggered()), this, SLOT(set16x()));
 
 	resolutionGroup = new QActionGroup(this);
 	resolutionGroup->addAction(set1xAction);
 	resolutionGroup->addAction(set2xAction);
 	resolutionGroup->addAction(set4xAction);
 	resolutionGroup->addAction(set8xAction);
-	resolutionGroup->addAction(set16xAction);
 
-	bgColorDialogAction = new QAction(tr("&Background color.."), this);
+	bgColorDialogAction = new QAction(tr("Background color.."), this);
 	connect(bgColorDialogAction, SIGNAL(triggered()), this, SLOT(bgColorDialog()));
-	fgColorDialogAction = new QAction(tr("&Foreground color.."), this);
+	fgColorDialogAction = new QAction(tr("Foreground color.."), this);
 	connect(fgColorDialogAction, SIGNAL(triggered()), this, SLOT(fgColorDialog()));
 
-	aboutAction = new QAction(tr("&About.."), this);
+	aboutAction = new QAction(tr("About.."), this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 void MainWindow::createMenu()
 {
-	fileMenu = menuBar()->addMenu(tr("&File"));
+	fileMenu = menuBar()->addMenu(tr("File"));
 	fileMenu->addAction(openRomAction);
 	fileMenu->addAction(closeRomAction);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
 
-	videoMenu = menuBar()->addMenu(tr("&Video"));
-	resolutionMenu = videoMenu->addMenu(tr("&Window size"));
+	videoMenu = menuBar()->addMenu(tr("Video"));
+	resolutionMenu = videoMenu->addMenu(tr("Window size"));
 	resolutionMenu->addAction(set1xAction);
 	resolutionMenu->addAction(set2xAction);
 	resolutionMenu->addAction(set4xAction);
 	resolutionMenu->addAction(set8xAction);
-	resolutionMenu->addAction(set16xAction);
 	videoMenu->addSeparator();
 	videoMenu->addAction(bgColorDialogAction);
 	videoMenu->addAction(fgColorDialogAction);
 
-	helpMenu = menuBar()->addMenu(tr("&Help"));
+	helpMenu = menuBar()->addMenu(tr("Help"));
 	helpMenu->addAction(aboutAction);
 }
 
@@ -214,40 +208,33 @@ void MainWindow::set1x()
 {
 	display->setResolution(1);
 	display->repaint();
-	setFixedSize (64, 32 + menuBar()->height());
+	setFixedSize (128, 64 + menuBar()->height());
 }
 
 void MainWindow::set2x()
 {
 	display->setResolution(2);
 	display->repaint();
-	setFixedSize (128, 64 + menuBar()->height());
+	setFixedSize (256, 128 + menuBar()->height());
 }
 
 void MainWindow::set4x()
 {
 	display->setResolution(4);
 	display->repaint();
-	setFixedSize (256, 128 + menuBar()->height());
+	setFixedSize (512, 256 + menuBar()->height());
 }
 
 void MainWindow::set8x()
 {
 	display->setResolution(8);
 	display->repaint();
-	setFixedSize (512, 256 + menuBar()->height());
-}
-
-void MainWindow::set16x()
-{
-	display->setResolution(16);
-	display->repaint();
 	setFixedSize (1024, 512 + menuBar()->height());
 }
 
 void MainWindow::about()
 {
-	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 emulator.</p><b>Homepage:  </b> <a href=\"http://emuchip.googlecode.com\">http://emuchip.googlecode.com</a>.<small><p>Copyright &copy; 2009-2012 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
+	QMessageBox::about(this, tr("About"), "<center><h3>emuChip v"+QCoreApplication::applicationVersion()+"</h3></center>"+tr("<center><p>emuChip is cross-platform CHIP-8 emulator.</p><b>Homepage:  </b> <a href=\"http://code.google.com/p/emuchip\">http://code.google.com/p/emuchip/</a>.<small><p>Copyright &copy; 2009-2012 Boris Timofeev (<a href=\"mailto:mashin87@gmail.com\">mashin87@gmail.com</a>).</p></small></center>"));
 }
 
 void MainWindow::writeSettings()
@@ -271,7 +258,6 @@ void MainWindow::readSettings()
 		case 2: set2xAction->setChecked(true); set2x(); break;
 		case 4: set4xAction->setChecked(true); set4x(); break;
 		case 8: set8xAction->setChecked(true); set8x(); break;
-		case 16: set16xAction->setChecked(true); set16x(); break;
 	}
 	lastDir = settings.value("lastDir", ".").toString();
 

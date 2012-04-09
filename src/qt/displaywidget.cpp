@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009  Boris Timofeev <mashin87@gmail.com>
+ *  Copyright (C) 2009-2012  Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,16 +25,22 @@ DisplayWidget::DisplayWidget()
 	repaint();
 }
 
-void DisplayWidget::clear()
+DisplayWidget::~DisplayWidget()
 {
-	for (int i = 0; i < 2048; i++)
-		screen[i] = 0;
 }
 
-void DisplayWidget::setScreen(unsigned char arr[64*32])
+void DisplayWidget::clear()
 {
-	for (int i = 0; i < 2048; i++)
-		screen[i] = arr[i];
+	for (int y = 0; y < 64; y++)
+		for (int x = 0; x < 128; x++)
+			screen[x][y] = 0;
+}
+
+void DisplayWidget::setScreen(unsigned char arr[128][64])
+{
+	for (int y = 0; y < 64; y++)
+		for (int x = 0; x < 128; x++)
+			screen[x][y] = arr[x][y];
 }
 
 void DisplayWidget::paintEvent(QPaintEvent *)
@@ -42,18 +48,16 @@ void DisplayWidget::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.scale ( resolution, resolution );
 	QBrush brush(bgColor, Qt::SolidPattern);
-	painter.fillRect(0, 0, 64, 32, brush);
+	painter.fillRect(0, 0, 128, 64, brush);
+
+	painter.setPen(fgColor);
+	painter.setBrush(fgColor);
 	
-	int t = 0;
-	for (int i = 0; i < 32; i++)
-		for (int j = 0; j < 64; j++)
-		{
-			if (screen[t++] == 1)
+	for (int y = 0; y < 64; y++)
+		for (int x = 0; x < 128; x++)
+			if (screen[x][y] == 1)
 			{
-				painter.setPen(fgColor);
-				painter.setBrush(fgColor);
-				if (resolution > 1) painter.drawRect ( j, i, 1, 1 );
-				else painter.drawPoint(j, i);
+				if (resolution > 1) painter.drawRect ( x, y, 1, 1 );
+				else painter.drawPoint(x, y);
 			}
-		}
 }

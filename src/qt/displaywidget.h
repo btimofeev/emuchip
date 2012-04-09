@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009  Boris Timofeev <mashin87@gmail.com>
+ *  Copyright (C) 2009-2012  Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ class DisplayWidget : public QWidget
 
 public:
 	DisplayWidget();
+	~DisplayWidget();
 	
 	void setResolution(int r) { resolution = r; }
 	int getResolution() { return resolution; }
@@ -35,7 +36,7 @@ public:
 	QColor getBgColor() { return bgColor; }
 	QColor getFgColor() { return fgColor; }
 
-	void setScreen(unsigned char [64*32]);
+	void setScreen(unsigned char [128][64]);
 	void clear();
 
 protected:
@@ -47,7 +48,7 @@ private:
 	QColor bgColor;
 	QColor fgColor;
 	
-	unsigned char screen[64*32];
+	unsigned char screen[128][64];
 };
 
 #endif
