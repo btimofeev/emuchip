@@ -422,7 +422,6 @@ void ChipEmu::executeNextOpcode()
 						V[0xF] = 1;
 					else 
 						V[0xF] = 0;
-					I += V[((opcode & 0x0F00)>>8)];
 					break;
 
 				case 0x29:		// FX29 - point I to 5 byte numeric sprite for value in VX
