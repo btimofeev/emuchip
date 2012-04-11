@@ -45,6 +45,7 @@ void MainWindow::loadGame()
 	if (fileName != "")
 	{
 		closeRom();
+		pauseEmulation->setChecked(false);
 		emu->loadGame(fileName.toLocal8Bit().data());
 		emuStart = true;
 		emulation();
@@ -181,6 +182,10 @@ void MainWindow::createActions()
 	fgColorDialogAction = new QAction(tr("Foreground color.."), this);
 	connect(fgColorDialogAction, SIGNAL(triggered()), this, SLOT(fgColorDialog()));
 
+	pauseEmulation = new QAction(tr("Pause"), this);
+	pauseEmulation->setCheckable(true);
+	pauseEmulation->setShortcut(tr("P"));
+	connect(pauseEmulation, SIGNAL(triggered()), this, SLOT(pause()));
 	resetEmulation = new QAction(tr("Reset"), this);
 	connect(resetEmulation, SIGNAL(triggered()), this, SLOT(reset()));
 	
@@ -207,6 +212,8 @@ void MainWindow::createMenu()
 	videoMenu->addAction(fgColorDialogAction);
 	
 	emulationMenu = menuBar()->addMenu(tr("Emulation"));
+	emulationMenu->addAction(pauseEmulation);
+	emulationMenu->addSeparator();
 	emulationMenu->addAction(resetEmulation);
 	
 	helpMenu = menuBar()->addMenu(tr("Help"));
@@ -294,4 +301,17 @@ void MainWindow::fgColorDialog()
 void MainWindow::reset()
 {
 	loadGame();
+}
+
+void MainWindow::pause()
+{
+	if (fileName == "") return;
+		
+	if (pauseEmulation->isChecked())
+		emuStart = false;
+	else
+	{
+		emuStart = true;
+		emulation();
+	}
 }

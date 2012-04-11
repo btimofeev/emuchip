@@ -44,6 +44,7 @@ private slots:
 	void bgColorDialog();
 	void fgColorDialog();
 	void reset();
+	void pause();
 	void about();
 	
 protected:
@@ -80,6 +81,7 @@ private:
 	QAction *set8xAction;
 	QAction *bgColorDialogAction;
 	QAction *fgColorDialogAction;
+	QAction *pauseEmulation;
 	QAction *resetEmulation;
 	QAction *aboutAction;
 
