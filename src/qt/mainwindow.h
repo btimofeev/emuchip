@@ -32,6 +32,7 @@ public:
 	MainWindow();
 	void readSettings();
 	void writeSettings();
+	void loadGame();
 
 private slots:
 	void openRom();
@@ -42,6 +43,7 @@ private slots:
 	void set8x();
 	void bgColorDialog();
 	void fgColorDialog();
+	void reset();
 	void about();
 	
 protected:
@@ -56,6 +58,8 @@ private:
 	
 	bool emuStart;
 	int opcode_count;
+
+	QString fileName;
 	
 	ChipEmu *emu;
 	DisplayWidget *display;
@@ -64,6 +68,7 @@ private:
 	QMenu *videoMenu;
 	QMenu *resolutionMenu;
 	QActionGroup *resolutionGroup;
+	QMenu *emulationMenu;
 	QMenu *helpMenu;
 	
 	QAction *openRomAction;
@@ -75,6 +80,7 @@ private:
 	QAction *set8xAction;
 	QAction *bgColorDialogAction;
 	QAction *fgColorDialogAction;
+	QAction *resetEmulation;
 	QAction *aboutAction;
 
 	QString lastDir;

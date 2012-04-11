@@ -35,9 +35,13 @@ MainWindow::MainWindow()
 
 void MainWindow::openRom()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open file"), lastDir, tr("All files (*)"));
+	fileName = QFileDialog::getOpenFileName(this, tr("Open file"), lastDir, tr("All files (*)"));
 	lastDir = QFileInfo(fileName).absolutePath();
-	
+	loadGame();
+}
+
+void MainWindow::loadGame()
+{
 	if (fileName != "")
 	{
 		closeRom();
@@ -46,7 +50,6 @@ void MainWindow::openRom()
 		emulation();
 	}
 }
-
 void MainWindow::closeRom()
 {
 	emuStart = false;
@@ -178,6 +181,9 @@ void MainWindow::createActions()
 	fgColorDialogAction = new QAction(tr("Foreground color.."), this);
 	connect(fgColorDialogAction, SIGNAL(triggered()), this, SLOT(fgColorDialog()));
 
+	resetEmulation = new QAction(tr("Reset"), this);
+	connect(resetEmulation, SIGNAL(triggered()), this, SLOT(reset()));
+	
 	aboutAction = new QAction(tr("About.."), this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
@@ -199,7 +205,10 @@ void MainWindow::createMenu()
 	videoMenu->addSeparator();
 	videoMenu->addAction(bgColorDialogAction);
 	videoMenu->addAction(fgColorDialogAction);
-
+	
+	emulationMenu = menuBar()->addMenu(tr("Emulation"));
+	emulationMenu->addAction(resetEmulation);
+	
 	helpMenu = menuBar()->addMenu(tr("Help"));
 	helpMenu->addAction(aboutAction);
 }
@@ -280,4 +289,9 @@ void MainWindow::fgColorDialog()
 {
 	display->setFgColor(QColorDialog::getColor (Qt::white));
 	display->repaint();
+}
+
+void MainWindow::reset()
+{
+	loadGame();
 }
