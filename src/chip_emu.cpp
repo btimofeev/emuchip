@@ -445,12 +445,12 @@ void ChipEmu::executeNextOpcode()
 
 				case 0x55:		// FX55 - store V0 .. VX in [I] .. [I+X]
 					for (int n=0; n <= ((opcode & 0x0F00)>>8); n++)
-						memory[I++] = V[n];
+						memory[I+n] = V[n];
 					break;
 
 				case 0x65:		// FX65 - read V0 .. VX from [I] .. [I+X]
 					for (int n=0; n <= ((opcode & 0x0F00)>>8); n++)
-						V[n] = memory[I++];
+						V[n] = memory[I+n];
 					break;
 					
 				case 0x75:		// FX75 - save V0...VX (X<8) in the HP48 flags *SCHIP*
