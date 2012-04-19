@@ -29,7 +29,7 @@ MainWindow::MainWindow()
 	display = new DisplayWidget();
 	setCentralWidget(display);
 	
-	emuStart = false;
+	stopped = true;
 	readSettings();
 }
 
@@ -45,16 +45,16 @@ void MainWindow::loadGame()
 	if (fileName != "")
 	{
 		closeRom();
+		emu->init();
 		pauseEmulation->setChecked(false);
 		emu->loadGame(fileName.toLocal8Bit().data());
-		emuStart = true;
+		stopped = false;
 		emulation();
 	}
 }
 void MainWindow::closeRom()
 {
-	emuStart = false;
-	emu->init();
+	stopped = true;
 	display->clear();
 	display->repaint();
 }
@@ -64,7 +64,9 @@ void MainWindow::emulation()
 	QElapsedTimer et;
 	et.start();
 	
-	while (emuStart == true)
+	opcode_count = 0;
+	
+	while (!stopped)
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
@@ -85,7 +87,7 @@ void MainWindow::emulation()
 			
 			opcode_count = 0;
 		}
-		if (emu->stop) closeRom();
+		if (emu->stop == true) closeRom();
 	}
 }
 
@@ -308,10 +310,10 @@ void MainWindow::pause()
 	if (fileName == "") return;
 		
 	if (pauseEmulation->isChecked())
-		emuStart = false;
+		stopped = true;
 	else
 	{
-		emuStart = true;
+		stopped = false;
 		emulation();
 	}
 }

@@ -57,7 +57,7 @@ private:
 	void createMenu();
 	void emulation();
 	
-	bool emuStart;
+	bool stopped;
 	int opcode_count;
 
 	QString fileName;
