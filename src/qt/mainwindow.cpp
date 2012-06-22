@@ -65,12 +65,18 @@ void MainWindow::emulation()
 	et.start();
 	
 	opcode_count = 0;
-	
+	int cycles_per_second;
+
 	while (!stopped)
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
-		if (opcode_count < 12)	// execute 720 opcodes per sec
+        if (emu->mode == 0)
+            cycles_per_second = 10; // execute 600 opcodes per second
+        else
+            cycles_per_second = 30; // 1800 opcodes per second
+
+		if (opcode_count < cycles_per_second)
 		{
 			emu->executeNextOpcode();
 			opcode_count++;

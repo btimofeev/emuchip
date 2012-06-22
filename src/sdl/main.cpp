@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
 		Uint32 lasttick = SDL_GetTicks(); //for delay fps
 		
 		int opcode_count = 0;
+        int cycles_per_second;
 		while (!done)
 		{
 			//keyboard
@@ -140,7 +141,12 @@ int main(int argc, char *argv[])
 				handle_input(event);
 			}
 		
-			if (opcode_count < 12)	// execute 720 opcodes per sec
+            if (emu.mode == 0)
+                cycles_per_second = 10; // execute 600 opcodes per second
+            else
+                cycles_per_second = 30; // 1800 opcodes per second
+
+			if (opcode_count < cycles_per_second)
 			{
 				emu.executeNextOpcode();
 				opcode_count++;

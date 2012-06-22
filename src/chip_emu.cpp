@@ -242,7 +242,7 @@ void ChipEmu::executeNextOpcode()
 				
 				case 0xFD:		// 00FD - Quit the emulator
 					stop = true;
-					cout << "Quit the emulator" << endl;
+					cout << "Game Over" << endl;
 					break;
 						
 				case 0xFE:		// 00FE - disable extended screen mode *SCHIP*
@@ -503,9 +503,9 @@ bool ChipEmu::loadGame(const char *filename)
 
 void ChipEmu::decreaseTimers()
 {
-	if(delay_timer > 0)
+	if (delay_timer > 0)
 		--delay_timer;
 
-	if(sound_timer > 0)
+	if (sound_timer > 0)
 		--sound_timer;
 }
