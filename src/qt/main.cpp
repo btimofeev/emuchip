@@ -18,17 +18,17 @@
 
 #include <QtGui>
 #include "mainwindow.h"
-
+#include "../version.h"
 
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	
 	app.setApplicationName("emuChip");
-	app.setApplicationVersion("0.3");
+	app.setApplicationVersion(VERSION);
 		
 	MainWindow mainWin;
-	mainWin.setWindowTitle(app.applicationName() + " v" + app.applicationVersion());
+	mainWin.setWindowTitle(app.applicationName() + " " + app.applicationVersion());
 	mainWin.show();
 	return app.exec();
 }

@@ -18,6 +18,7 @@
 #include <SDL/SDL.h>
 #include <iostream>
 #include "../chip_emu.h"
+#include "../version.h"
 
 using namespace std;
 
@@ -113,7 +114,7 @@ void handle_input(SDL_Event &event)
 
 int main(int argc, char *argv[])
 {
-	cout << "emuChip-sdl v0.3" << endl << "Copyright (C) 2009-2012 Boris Timofeev <mashin87@gmail.com>" << endl << endl;
+	cout << "emuChip-sdl "VERSION << endl << "Copyright (C) 2009-2012 Boris Timofeev <mashin87@gmail.com>" << endl << endl;
 	if (argc == 1){
 		cerr << "Error: no input file specified" << endl;
 		cerr << "Usage: " << argv[0] << " FILE" << endl;
