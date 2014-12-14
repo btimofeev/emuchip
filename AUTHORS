@@ -1,0 +1,10 @@
+Original Author
+---------------
+Boris Timofeev <mashin87@gmail.com>
+
+
+Credits
+-------
+Alexander Dvachevsky <s1n.pcc@gmail.com>
+	auto-generate version string from git version
+	cmake build

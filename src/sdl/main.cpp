@@ -1,6 +1,6 @@
 /*
  *  emuChip - CHIP-8 emulator.
- *  Copyright (C) 2009-2012 Boris Timofeev <mashin87@gmail.com> <http://www.emunix.org>
+ *  Copyright (C) 2009-2014 Boris Timofeev <mashin87@gmail.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -114,7 +114,7 @@ void handle_input(SDL_Event &event)
 
 int main(int argc, char *argv[])
 {
-	cout << "emuChip-sdl "VERSION << endl << "Copyright (C) 2009-2012 Boris Timofeev <mashin87@gmail.com>" << endl << endl;
+	cout << "emuChip-sdl "VERSION << endl << "Copyright (C) 2009-2014 Boris Timofeev <mashin87@gmail.com>" << endl << endl;
 	if (argc == 1){
 		cerr << "Error: no input file specified" << endl;
 		cerr << "Usage: " << argv[0] << " FILE" << endl;

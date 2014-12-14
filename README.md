@@ -1,4 +1,3 @@
-
 ### Description
 
 emuChip is cross-platform CHIP-8 and Super CHIP emulator written in C++, Qt and SDL libraries.
@@ -49,8 +48,6 @@ This is emulated as follows:
 
 ### Author
 
-Copyright (C) 2009-2012 by Boris Timofeev <mashin87@gmail.com>
+Copyright (C) 2009-2014 by Boris Timofeev <mashin87@gmail.com>
 
 Site: https://github.com/btimofeev/emuchip
-
-Blog: http://www.emunix.org
