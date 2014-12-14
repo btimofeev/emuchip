@@ -2,3 +2,6 @@
 build/
 bin/
 src/version.h
+Makefile
+*.user
+
