@@ -17,8 +17,9 @@
  */
 
 #ifndef DISPLAYWIDGET_H
-#define DISPLAYWIDGETH
+#define DISPLAYWIDGET_H
 
+#include <QColor>
 #include <QWidget>
 
 class DisplayWidget : public QWidget

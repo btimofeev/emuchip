@@ -10,10 +10,10 @@ emuChip is cross-platform CHIP-8 and Super CHIP emulator written in C++, Qt and 
 
 ### Compilation
 
-To compile Qt version:
+To compile Qt5 version:
 
 1. Open a terminal and browse into the extracted folder.
-2. Type 'qmake' to configure the program.
+2. Type 'qmake' or 'qmake-qt5' to configure the program.
 3. Type 'make' to compile the program.
     
 To compile SDL version:

@@ -1,6 +1,6 @@
 TARGET = emuchip-qt
 TEMPLATE = app
-QT = gui core
+QT = core gui widgets
 CONFIG += qt release 
 DESTDIR = bin
 OBJECTS_DIR = build

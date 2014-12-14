@@ -1,13 +1,13 @@
 TARGET    = emuchip-qt
-LIBS      = -lQtGui -lQtCore -lpthread
+LIBS      = -lQt5Widgets -lQt5Gui -lQt5Core -lpthread
 DEFINES   = -DQT_NO_DEBUG
-CXXFLAGS  = -O3 -Wall -W $(DEFINES)
+CXXFLAGS  = -O3 -Wall -W -fPIC $(DEFINES) 
 CXX       = g++
 MOC       = moc
 MKDIR     = mkdir -p
 STRIP     = strip
 RM        = rm -R
-INCPATH   = -I/usr/include/qt4/QtGui -I/usr/include/qt4
+INCPATH   = -I/usr/include/qt/QtGui -I/usr/include/qt/QtWidgets -I/usr/include/qt
 SRCDIR    = src/
 BUILDDIR  = build/
 TARGETDIR = bin/

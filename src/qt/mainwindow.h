@@ -19,8 +19,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QActionGroup>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QActionGroup>
 #include "../chip_emu.h"
 #include "displaywidget.h"
 

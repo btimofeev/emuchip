@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.11)
 
 option(BUILDSDL "BUILDSDL" OFF)
 
@@ -47,34 +47,32 @@ else()
 		emuchip-qt)
 	project(${PROJECT})
 	message("Build Qt version")
+
+	set(CMAKE_AUTOMOC ON)
+	set(CMAKE_INCLUDE_CURRENT_DIR ON)
 	
-	SET(HEADERS
+	set(HEADERS
 		src/chip_emu.h
 		src/version.h)
-	
-	SET(MOCHEAD
+
+	set(MOCHEAD
 		src/qt/displaywidget.h
 		src/qt/mainwindow.h)
-	
-	SET(SOURCES
+
+	set(SOURCES
 		src/qt/main.cpp
 		src/qt/displaywidget.cpp
 		src/qt/mainwindow.cpp
 		src/chip_emu.cpp)
-	
-	find_package (Qt4 REQUIRED QTCORE QTGUI)
-	if(NOT Qt4_FOUND)
-		message(SEND_ERROR "Failed to find Qt4")
+
+	find_package (Qt5Widgets REQUIRED)
+	if(NOT Qt5Widgets_FOUND)
+		message(SEND_ERROR "Failed to find Qt5")
 		return()
 	endif()
-	
-	QT4_WRAP_CPP(HEADERS_MOC ${MOCHEAD})
-	
-	include_directories(${Qt_INCLUDE_DIR})
-	INCLUDE(${QT_USE_FILE})
-	ADD_DEFINITIONS(${QT_DEFINITIONS})
+
 	add_executable(${PROJECT} ${HEADERS} ${SOURCES} ${HEADERS_MOC})
-	target_link_libraries (${PROJECT} ${QT_LIBRARIES})
+	target_link_libraries (${PROJECT} Qt5::Widgets)
 endif()
 
 install(TARGETS ${PROJECT} DESTINATION ${INSTALL_PATH})

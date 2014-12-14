@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui>
+#include <QtWidgets>
 #include "mainwindow.h"
 
 MainWindow::MainWindow()
@@ -285,11 +285,11 @@ void MainWindow::readSettings()
 	}
 	lastDir = settings.value("lastDir", ".").toString();
 
-	QVariant v = settings.value("bgColor", Qt::black);
+	QVariant v = settings.value("bgColor", QColor(Qt::black));
 	QColor color = v.value<QColor>();
 	display->setBgColor(color);
 
-	v = settings.value("fgColor", Qt::white);
+	v = settings.value("fgColor", QColor(Qt::white));
 	color = v.value<QColor>();
 	display->setFgColor(color);
 }
