@@ -27,7 +27,7 @@ class DisplayWidget : public QWidget
 	Q_OBJECT
 
 public:
-	DisplayWidget();
+	DisplayWidget(unsigned char[128][64]);
 	~DisplayWidget();
 	
 	void setResolution(int r) { resolution = r; }
@@ -36,8 +36,6 @@ public:
 	void setFgColor(QColor color) { fgColor = color; }
 	QColor getBgColor() { return bgColor; }
 	QColor getFgColor() { return fgColor; }
-
-	void setScreen(unsigned char [128][64]);
 	void clear();
 
 protected:
@@ -48,8 +46,8 @@ private:
 
 	QColor bgColor;
 	QColor fgColor;
-	
-	unsigned char screen[128][64];
+
+	unsigned char (*screen)[64];
 };
 
 #endif

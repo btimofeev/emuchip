@@ -19,8 +19,9 @@
 #include <QPainter>
 #include "displaywidget.h"
 
-DisplayWidget::DisplayWidget()
+DisplayWidget::DisplayWidget(unsigned char arr[128][64])
 {
+	screen = arr;
 	clear();
 	repaint();
 }
@@ -36,13 +37,6 @@ void DisplayWidget::clear()
 			screen[x][y] = 0;
 }
 
-void DisplayWidget::setScreen(unsigned char arr[128][64])
-{
-	for (int y = 0; y < 64; y++)
-		for (int x = 0; x < 128; x++)
-			screen[x][y] = arr[x][y];
-}
-
 void DisplayWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
@@ -52,12 +46,13 @@ void DisplayWidget::paintEvent(QPaintEvent *)
 
 	painter.setPen(fgColor);
 	painter.setBrush(fgColor);
-	
+
 	for (int y = 0; y < 64; y++)
 		for (int x = 0; x < 128; x++)
 			if (screen[x][y] == 1)
 			{
-				if (resolution > 1) painter.drawRect ( x, y, 1, 1 );
+				if (resolution > 1)
+					painter.drawRect ( x, y, 1, 1 );
 				else painter.drawPoint(x, y);
 			}
 }

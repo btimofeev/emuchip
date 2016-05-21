@@ -26,9 +26,9 @@ MainWindow::MainWindow()
 	createMenu();
 
 	emu = new ChipEmu();
-	display = new DisplayWidget();
+	display = new DisplayWidget(emu->screen);
 	setCentralWidget(display);
-	
+
 	stopped = true;
 	readSettings();
 }
@@ -63,7 +63,7 @@ void MainWindow::emulation()
 {
 	QElapsedTimer et;
 	et.start();
-	
+
 	opcode_count = 0;
 	int cycles_per_second;
 
@@ -71,26 +71,24 @@ void MainWindow::emulation()
 	{
 		QCoreApplication::processEvents ( QEventLoop::AllEvents );
 
-        if (emu->mode == 0)
-            cycles_per_second = 10; // execute 600 opcodes per second
-        else
-            cycles_per_second = 30; // 1800 opcodes per second
+		if (emu->mode == 0)
+		  cycles_per_second = 10; // execute 600 opcodes per second
+		else
+		  cycles_per_second = 30; // 1800 opcodes per second
 
 		if (opcode_count < cycles_per_second)
 		{
 			emu->executeNextOpcode();
 			opcode_count++;
 		}
-			
+
 		//decrease timers every 1/60sec and redraw screen
 		if (et.hasExpired(1000/60))
 		{
 			emu->decreaseTimers();
 			et.restart();
-			
-			display->setScreen(emu->screen);
 			display->repaint();
-			
+
 			opcode_count = 0;
 		}
 		if (emu->stop == true) closeRom();
@@ -98,7 +96,7 @@ void MainWindow::emulation()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
-{	
+{
 	switch(event->key())
 	{
 		case Qt::Key_1: emu->key[1] = 1; break;
@@ -196,7 +194,7 @@ void MainWindow::createActions()
 	connect(pauseEmulation, SIGNAL(triggered()), this, SLOT(pause()));
 	resetEmulation = new QAction(tr("Reset"), this);
 	connect(resetEmulation, SIGNAL(triggered()), this, SLOT(reset()));
-	
+
 	aboutAction = new QAction(tr("About.."), this);
 	connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
@@ -218,12 +216,12 @@ void MainWindow::createMenu()
 	videoMenu->addSeparator();
 	videoMenu->addAction(bgColorDialogAction);
 	videoMenu->addAction(fgColorDialogAction);
-	
+
 	emulationMenu = menuBar()->addMenu(tr("Emulation"));
 	emulationMenu->addAction(pauseEmulation);
 	emulationMenu->addSeparator();
 	emulationMenu->addAction(resetEmulation);
-	
+
 	helpMenu = menuBar()->addMenu(tr("Help"));
 	helpMenu->addAction(aboutAction);
 }
@@ -314,7 +312,7 @@ void MainWindow::reset()
 void MainWindow::pause()
 {
 	if (fileName == "") return;
-		
+
 	if (pauseEmulation->isChecked())
 		stopped = true;
 	else

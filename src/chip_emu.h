@@ -44,7 +44,6 @@ public:
 	int mode;						// 0 - CHIP-8
 									// 1 - SCHIP
 
-	unsigned char screen[128][64];
 	unsigned char key[16];			// 0 - KEY_RELEASED
 									// 1 - KEY_PRESSED
 
@@ -55,6 +54,8 @@ public:
 	bool loadGame(const char *filename);
 	void executeNextOpcode();
 	void decreaseTimers();
-	
+
+ public:
+	unsigned char screen[128][64];
 };
 #endif
