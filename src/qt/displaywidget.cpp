@@ -40,6 +40,7 @@ void DisplayWidget::clear()
 void DisplayWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
+	painter.setRenderHint(QPainter::Qt4CompatiblePainting, true);
 	painter.scale ( resolution, resolution );
 	QBrush brush(bgColor, Qt::SolidPattern);
 	painter.fillRect(0, 0, 128, 64, brush);
