@@ -1,24 +1,30 @@
 ### Description
 
-emuChip is cross-platform CHIP-8 and Super CHIP emulator written in C++, Qt and SDL libraries.
+emuChip is cross-platform CHIP-8 and Super CHIP emulator.
 
-### Supported platforms
-
-* Linux
-* Windows
+Source code: https://github.com/btimofeev/emuchip
 
 ### Compilation
 
 To compile Qt5 version:
 
 1. Open a terminal and browse into the extracted folder.
-2. Type 'qmake' or 'qmake-qt5' to configure the program.
-3. Type 'make' to compile the program.
-    
+2. Type `qmake` or `qmake-qt5` to configure the program.
+3. Type `make` to compile the program.
+
 To compile SDL version:
 
 1. Open a terminal and browse into the extracted folder.
-2. Type 'make -f Makefile.emuchip-sdl' to compile the program.
+2. Type `make -f Makefile.emuchip-sdl` to compile the program.
+
+Optionally, you can use CMake build system:
+
+1. Open a terminal and browse into the extracted folder.
+2. `mkdir build && cd build`
+3. 
+    * `cmake ..` to configure Qt version
+    * `cmake -D BUILDSDL=1 ..` to configure SDL version
+3. `make`
 
 ### Key mappings
 
@@ -46,8 +52,3 @@ This is emulated as follows:
 		|Z|X|C|V|
 		+-+-+-+-+
 
-### Author
-
-Copyright (C) 2009-2014 by Boris Timofeev <mashin87@gmail.com>
-
-Site: https://github.com/btimofeev/emuchip
