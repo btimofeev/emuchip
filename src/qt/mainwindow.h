@@ -33,10 +33,14 @@ public:
 	void readSettings();
 	void writeSettings();
 	void loadGame();
+	QMenuBar *mbar;
+	bool eventFilter(QObject*, QEvent*);
 
 private slots:
 	void openRom();
 	void closeRom();
+	void updateSize(int, int);
+	void menuSize(QEvent *);
 	void set1x();
 	void set2x();
 	void set4x();
@@ -46,7 +50,7 @@ private slots:
 	void reset();
 	void pause();
 	void about();
-	
+
 protected:
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
@@ -56,22 +60,25 @@ private:
 	void createActions();
 	void createMenu();
 	void emulation();
-	
+
+	int win_width;
+	int win_height;
+
 	bool stopped;
 	int opcode_count;
 
 	QString fileName;
-	
+
 	ChipEmu *emu;
 	DisplayWidget *display;
-	
+
 	QMenu *fileMenu;
 	QMenu *videoMenu;
 	QMenu *resolutionMenu;
 	QActionGroup *resolutionGroup;
 	QMenu *emulationMenu;
 	QMenu *helpMenu;
-	
+
 	QAction *openRomAction;
 	QAction *closeRomAction;
 	QAction *exitAction;

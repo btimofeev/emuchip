@@ -21,7 +21,7 @@
 
 MainWindow::MainWindow()
 {
-
+	mbar = menuBar();
 	createActions();
 	createMenu();
 
@@ -30,7 +30,21 @@ MainWindow::MainWindow()
 	setCentralWidget(display);
 
 	stopped = true;
+
+	win_width = 0;
+	win_height = 0;
+
 	readSettings();
+	mbar->installEventFilter(this);
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+	if (obj == mbar) {
+		if (event->type() == QEvent::Resize) {
+			menuSize(event);
+		} else return false;
+	}
+	return QMainWindow::eventFilter(obj, event);
 }
 
 void MainWindow::openRom()
@@ -201,13 +215,13 @@ void MainWindow::createActions()
 
 void MainWindow::createMenu()
 {
-	fileMenu = menuBar()->addMenu(tr("File"));
+	fileMenu = mbar->addMenu(tr("File"));
 	fileMenu->addAction(openRomAction);
 	fileMenu->addAction(closeRomAction);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAction);
 
-	videoMenu = menuBar()->addMenu(tr("Video"));
+	videoMenu = mbar->addMenu(tr("Video"));
 	resolutionMenu = videoMenu->addMenu(tr("Window size"));
 	resolutionMenu->addAction(set1xAction);
 	resolutionMenu->addAction(set2xAction);
@@ -217,41 +231,54 @@ void MainWindow::createMenu()
 	videoMenu->addAction(bgColorDialogAction);
 	videoMenu->addAction(fgColorDialogAction);
 
-	emulationMenu = menuBar()->addMenu(tr("Emulation"));
+	emulationMenu = mbar->addMenu(tr("Emulation"));
 	emulationMenu->addAction(pauseEmulation);
 	emulationMenu->addSeparator();
 	emulationMenu->addAction(resetEmulation);
 
-	helpMenu = menuBar()->addMenu(tr("Help"));
+	helpMenu = mbar->addMenu(tr("Help"));
 	helpMenu->addAction(aboutAction);
+}
+
+
+void MainWindow::updateSize(int x, int y) {
+	display->repaint();
+	if (x == 0 or y == 0) {
+		x = win_width;
+		y = win_height;
+	} else {
+		win_width = x;
+		win_height = y;
+	}
+	setFixedSize(x, y + mbar->height());
 }
 
 void MainWindow::set1x()
 {
 	display->setResolution(1);
-	display->repaint();
-	setFixedSize (128, 64 + menuBar()->height());
+	updateSize (128, 64);
 }
 
 void MainWindow::set2x()
 {
 	display->setResolution(2);
-	display->repaint();
-	setFixedSize (256, 128 + menuBar()->height());
+	updateSize (256, 128);
 }
 
 void MainWindow::set4x()
 {
 	display->setResolution(4);
-	display->repaint();
-	setFixedSize (512, 256 + menuBar()->height());
+	updateSize (512, 256);
 }
 
 void MainWindow::set8x()
 {
 	display->setResolution(8);
-	display->repaint();
-	setFixedSize (1024, 512 + menuBar()->height());
+	updateSize (1024, 512);
+}
+
+void MainWindow::menuSize(QEvent *) {
+	updateSize(0, 0);
 }
 
 void MainWindow::about()
