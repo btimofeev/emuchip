@@ -8,3 +8,7 @@ Credits
 Alexander Dvachevsky <s1n.pcc@gmail.com>
 	auto-generate version string from git version
 	cmake build
+
+Viktor Fedenyov <me@ii-net.tk>
+	Qt window size bugfix
+	remove some overheads
