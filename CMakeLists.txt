@@ -8,12 +8,12 @@ SET(PROJVER
 SET(INSTALL_PATH /usr/local/bin/)
 
 include(FindGit OPTIONAL)
-if(GIT_FOUND)
+if(GIT_FOUND AND (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git))
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/module ${CMAKE_MODULE_PATH})
 	include(GetGitRevisionDescription)
 	git_describe(VERSION --tags)
 else()
-	set(VERSION %{PROJVER})
+	set(VERSION ${PROJVER})
 endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.cmake
 			   ${CMAKE_CURRENT_SOURCE_DIR}/src/version.h)
