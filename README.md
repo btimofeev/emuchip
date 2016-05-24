@@ -6,6 +6,8 @@ Source code: https://github.com/btimofeev/emuchip
 
 ### Compilation
 
+[![Build Status](https://travis-ci.org/btimofeev/emuchip.svg?branch=master)](https://travis-ci.org/btimofeev/emuchip)
+
 1. Open a terminal and browse into the extracted folder.
 2. `mkdir build && cd build`
 3. 
